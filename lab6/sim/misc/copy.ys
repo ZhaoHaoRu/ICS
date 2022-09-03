@@ -1,0 +1,54 @@
+#Zhao Haoru
+#520021910352
+
+# Execution
+.pos 0
+    irmovq stack, %rsp
+    call main
+    halt
+
+.align 8
+# Source block
+src:
+    .quad 0x00a
+    .quad 0x0b0
+    .quad 0xc00
+# Destination block
+dest:
+    .quad 0x111
+    .quad 0x222
+    .quad 0x333
+
+
+main:
+    irmovq src, %rdi
+    irmovq dest, %rsi
+    irmovq $0x3, %rdx
+    call copy_block
+    ret
+
+
+copy_block:
+    xorq %rax, %rax
+    irmovq $0x1, %r8
+    irmovq $0x8, %r11
+    jmp test
+
+loop:
+    mrmovq (%rdi), %r10
+    addq %r11, %rdi
+    rmmovq %r10, (%rsi)
+    addq %r11, %rsi
+    xorq %r10, %rax
+    subq %r8, %rdx
+
+test:
+    andq %rdx, %rdx
+    jne loop
+    ret
+
+
+
+    .pos 0x200
+stack:
+
