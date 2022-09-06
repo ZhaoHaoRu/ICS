@@ -1,0 +1,3 @@
+mov $0x556748c8,%rdi
+push $0x401cb9
+ret
